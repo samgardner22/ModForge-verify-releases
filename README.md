@@ -8,7 +8,7 @@ A deterministic static analysis tool designed to validate BepInEx mod packages a
 ## How to Use
 
 ### 1. Scan a Single File
-Drag and drop a mod `.zip` file directly onto `ModForge.Verify.CLI.exe`.
+Drag and drop a mod `.zip` file directly onto `ModForgeVerify.exe`.
 
 ### 2. Batch Scan
 Drag and drop a folder containing multiple `.zip` files onto the executable.
