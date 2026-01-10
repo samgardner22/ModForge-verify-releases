@@ -1,9 +1,9 @@
-# ModForge Verify CLI (v0.1.0)
+# ModForge Verify CLI (v0.2.0)
 
 ## What this is
 ModForge Verify is a deterministic, static compliance checker for BepInEx/Unity mod packages.
 
-It answers one question: Does this package comply with the selected Profile’s rules?
+It answers one question: Does this package comply with the selected Profile's rules?
 
 Compliance ≠ safety. A GREEN result does not guarantee runtime stability, absence of bugs, multiplayer sync, or security.
 
@@ -14,15 +14,15 @@ BepInEx and ModForge Verify serve different roles.
 BepInEx is the loader. Its job is to load mods at runtime and report errors when something fails.
 
 ModForge Verify is the inspector. It statically scans a mod package before runtime to check:
-• plugin identity (GUID + version)
-• declared vs actual dependencies
-• known risk signals (e.g. unreadable or obfuscated assemblies)
+- plugin identity (GUID + version)
+- declared vs actual dependencies
+- known risk signals (e.g. unreadable or obfuscated assemblies)
 
 ModForge does not run mods, sandbox code, or guarantee stability.
 
 Think of it this way:
-• BepInEx assumes mods are correct and tries to run them.
-• ModForge Verify checks whether mods are built correctly before they are run.
+- BepInEx assumes mods are correct and tries to run them.
+- ModForge Verify checks whether mods are built correctly before they are run.
 
 This helps support helpers filter obvious structural problems early, before logs and crashes enter the loop.
 
@@ -30,6 +30,8 @@ This helps support helpers filter obvious structural problems early, before logs
 1. **Drag & Drop** the mod ZIP (or folder) onto `ModForgeVerify.exe`.
 2. **Tool runs headlessly**: The scan completes and the summary is automatically copied to your clipboard.
 3. **Paste into Discord**: Share the summary with helpers immediately to get structured support.
+
+**Windows SmartScreen Notice:** Windows may show an "Unknown Publisher" warning. Click **More info** → **Run anyway** to continue.
 
 ## Mental model (10 seconds)
 - **Engine** = Judge (stable, deterministic)
@@ -44,13 +46,16 @@ This tool is designed to reduce support back-and-forth by making the first respo
 
 High-level system diagrams are available in /docs/diagrams.
 
-## “Blank Slate” profile.json (important)
-The profile.json shipped with v0.1.0 is intentionally a Blank Slate example:
+## "Blank Slate" profile.json (important)
+This is an Example Profile (optional). Normal users do not need to download or edit this file for standard use.
+
+The provided profile.json is intentionally a Blank Slate example:
 - It demonstrates the format and lets communities define their own allow/block lists and severities.
-- It is not claiming to be “the official rules” for any specific game/community.
+- It is not claiming to be "the official rules" for any specific game/community.
 - Users can populate allowlists/blocklists to match their local rules.
 
 ## Verdict wording
 - **GREEN = COMPLIANT (static checks passed)** — No deterministic violations detected. Compliance only. Does not guarantee runtime stability.
 - **AMBER = REVIEW (not failure)** — Uncertainties detected; manual review may be needed.
 - **RED = NON-COMPLIANT** — Deterministic violations detected.
+- **INFO = INFORMATIONAL** — Package structure is recognized but cannot be fully analyzed (e.g., modpacks or helper libraries).
