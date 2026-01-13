@@ -1,61 +1,63 @@
-# ModForge Verify CLI (v0.2.0)
+# ModClear (Diagnostic Tool)
 
-## What this is
-ModForge Verify is a deterministic, static compliance checker for BepInEx/Unity mod packages.
+![ModClear Badge](./docs/badge.png)
 
-It answers one question: Does this package comply with the selected Profile's rules?
+ModClear is an offline diagnostic tool for modded games.
+Drag in a mod ZIP or r2modman profile export (.r2z) and get an instant, pasteable diagnosis of the file-level mod state — including loader status, installed mods, duplicates, missing dependencies, known conflicts, junk files, and dangerous configs.
 
-Compliance ≠ safety. A GREEN result does not guarantee runtime stability, absence of bugs, multiplayer sync, or security.
+ModClear doesn’t fix mods or run the game. It replaces guessing with clarity.
 
-## How ModForge Verify Fits with BepInEx
+![Explainer Sketch](./docs/explainer.png)
 
-BepInEx and ModForge Verify serve different roles.
+## How ModClear Fits with BepInEx
 
-BepInEx is the loader. Its job is to load mods at runtime and report errors when something fails.
+BepInEx and ModClear serve different roles.
 
-ModForge Verify is the inspector. It statically scans a mod package before runtime to check:
+**BepInEx** is the loader. Its job is to load mods at runtime and report errors when something fails.
+
+**ModClear** is the diagnostic engine. It statically scans a mod package (or profile export) before runtime to check:
 - plugin identity (GUID + version)
 - declared vs actual dependencies
 - known risk signals (e.g. unreadable or obfuscated assemblies)
+- duplicate mods or version conflicts
+- junk files and dangerous configurations
 
-ModForge does not run mods, sandbox code, or guarantee stability.
+ModClear does not run mods, sandbox code, or guarantee stability.
 
 Think of it this way:
-- BepInEx assumes mods are correct and tries to run them.
-- ModForge Verify checks whether mods are built correctly before they are run.
+- **BepInEx** assumes mods are correct and tries to run them.
+- **ModClear** checks whether mods are structured correctly before they are run.
 
 This helps support helpers filter obvious structural problems early, before logs and crashes enter the loop.
 
 ## Quickstart (Support Flow)
-1. **Drag & Drop** the mod ZIP (or folder) onto `ModForgeVerify.exe`.
+
+1. **Drag & Drop** the mod ZIP, folder, or **r2modman export (.r2z)** onto `ModClear.exe`.
 2. **Tool runs headlessly**: The scan completes and the summary is automatically copied to your clipboard.
 3. **Paste into Discord**: Share the summary with helpers immediately to get structured support.
 
-**Windows SmartScreen Notice:** Windows may show an "Unknown Publisher" warning. Click **More info** → **Run anyway** to continue.
+**Windows SmartScreen Notice:** Windows may show an "Unknown Publisher" warning because this tool is not digitally signed (which costs money). Click "More Info" -> "Run Anyway".
 
-## Mental model (10 seconds)
-- **Engine** = Judge (stable, deterministic)
-- **Profiles** = Law (versioned, community-defined)
-- **Report** = Social Ticket (used in support workflows)
+## Mental Model (The "Why")
 
-## How this fits into support
-This tool is designed to reduce support back-and-forth by making the first response more structured:
-- Users run the check on a mod ZIP (or a folder of zips).
-- The tool outputs a short Discord-ready summary (copied to clipboard) + full report artifacts.
-- Helpers can ask: “Paste your ModForge report first so we can help.”
-
-High-level system diagrams are available in /docs/diagrams.
+- **Tool** = Mechanic (stable, deterministic)
+- **Profiles** = Reference Manual (versioned, community-defined)
+- **Report** = Diagnostic Chart (used in support workflows)
 
 ## "Blank Slate" profile.json (important)
 This is an Example Profile (optional). Normal users do not need to download or edit this file for standard use.
 
-The provided profile.json is intentionally a Blank Slate example:
+The provided `profile.json` is intentionally a Blank Slate example:
 - It demonstrates the format and lets communities define their own allow/block lists and severities.
 - It is not claiming to be "the official rules" for any specific game/community.
 - Users can populate allowlists/blocklists to match their local rules.
 
-## Verdict wording
-- **GREEN = COMPLIANT (static checks passed)** — No deterministic violations detected. Compliance only. Does not guarantee runtime stability.
-- **AMBER = REVIEW (not failure)** — Uncertainties detected; manual review may be needed.
-- **RED = NON-COMPLIANT** — Deterministic violations detected.
-- **INFO = INFORMATIONAL** — Package structure is recognized but cannot be fully analyzed (e.g., modpacks or helper libraries).
+## Verdict semantics
+
+We use simplified status semantics for scale:
+
+- **CRITICAL** — Must be fixed. Deterministic errors preventing proper function.
+- **WARNING** — Worth checking. Potential risks or configuration issues.
+- **CLEAR** — Nothing obvious at file level. No static issues found.
+
+(The report stays neutral and factual — no false authority.)
